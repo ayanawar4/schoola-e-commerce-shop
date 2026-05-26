@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { ChevronDown, ChevronUp, CheckCircle, Clock, GraduationCap } from "lucide-react";
@@ -20,6 +20,11 @@ export default function CheckoutPage() {
   const createOrder = useCreateOrder();
 
   const [selectedStudent, setSelectedStudent] = useState<number | null>(null);
+  useEffect(() => {
+    if (students && students.length > 0 && selectedStudent === null) {
+      setSelectedStudent(students[0].id);
+    }
+  }, [students]);
   const [address, setAddress] = useState("");
   const [paymentRef, setPaymentRef] = useState("");
   const [notes, setNotes] = useState("");
