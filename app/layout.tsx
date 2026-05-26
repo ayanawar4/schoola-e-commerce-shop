@@ -4,7 +4,8 @@ import { Providers } from "@/components/layout/Providers";
 
 export const metadata: Metadata = {
   title: { default: "Schoola | سكولا", template: "%s | Schoola" },
-  description: "School uniforms and supplies in Saudi Arabia | الزي المدرسي والأدوات في المملكة العربية السعودية",
+  description: "Egypt's #1 platform for official school uniforms & supplies | المنصة الأولى للزي المدرسي الرسمي والأدوات الدراسية في مصر",
+  icons: { icon: "/icon.svg" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
