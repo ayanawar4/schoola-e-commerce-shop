@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Home, GraduationCap, Shirt, ShoppingCart, User } from "lucide-react";
 import { useCartStore } from "@/lib/store/cart";
@@ -10,6 +11,8 @@ export function BottomNav() {
   const pathname = usePathname();
   const itemCount = useCartStore((s) => s.itemCount());
   const { locale } = useUiStore();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const links = [
     { href: "/", icon: Home, label: locale === "ar" ? "الرئيسية" : "Home" },
@@ -19,7 +22,7 @@ export function BottomNav() {
       href: "/cart",
       icon: ShoppingCart,
       label: locale === "ar" ? "السلة" : "Cart",
-      badge: itemCount > 0 ? itemCount : undefined,
+      badge: mounted && itemCount > 0 ? itemCount : undefined,
     },
     { href: "/account", icon: User, label: locale === "ar" ? "حسابي" : "Account" },
   ];

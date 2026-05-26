@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { ShoppingCart, Package, Globe, Moon, Sun, User } from "lucide-react";
 import { useCartStore } from "@/lib/store/cart";
 import { useAuthStore } from "@/lib/store/auth";
@@ -11,6 +12,8 @@ export function Header() {
   const itemCount = useCartStore((s) => s.itemCount());
   const { isAuthenticated } = useAuthStore();
   const { locale, darkMode, setLocale, toggleDarkMode } = useUiStore();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-100 dark:border-gray-800 shadow-sm">
@@ -23,8 +26,7 @@ export function Header() {
               alt="Schoola"
               width={160}
               height={52}
-              className="h-20 max-w-[180px]"
-              style={{ width: "auto" }}
+              style={{ height: 80, width: "auto" }}
               priority
             />
           ) : (
@@ -33,8 +35,7 @@ export function Header() {
               alt="Schoola"
               width={160}
               height={52}
-              className="h-20 max-w-[180px]"
-              style={{ width: "auto" }}
+              style={{ height: 80, width: "auto" }}
               priority
             />
           )}
@@ -78,7 +79,7 @@ export function Header() {
           {/* Cart */}
           <Link href="/cart" className="relative p-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white transition-all">
             <ShoppingCart className="w-5 h-5" />
-            {itemCount > 0 && (
+            {mounted && itemCount > 0 && (
               <span className="absolute -top-0.5 -end-0.5 min-w-[18px] h-[18px] rounded-full bg-[#318B9B] text-white text-[10px] font-bold flex items-center justify-center px-1">
                 {itemCount}
               </span>
