@@ -25,12 +25,15 @@ export default function CheckoutPage() {
   const [notes, setNotes] = useState("");
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [completedOrder, setCompletedOrder] = useState<Order | null>(null);
+  const [triedSubmit, setTriedSubmit] = useState(false);
 
   const sub = subtotal();
 
   async function handlePlaceOrder() {
     if (!selectedStudent) {
+      setTriedSubmit(true);
       toast(locale === "ar" ? "اختر الطالب أولاً" : "Please select a student", "error");
+      document.getElementById("student-section")?.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
     if (!paymentRef.trim()) {
@@ -163,13 +166,38 @@ export default function CheckoutPage() {
       </div>
 
       {/* Student selection */}
-      <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <GraduationCap className="w-4 h-4 text-[#318B9B]" />
-          <h2 className="font-bold text-gray-900 dark:text-white text-sm">
-            {locale === "ar" ? "الطالب *" : "Student *"}
-          </h2>
+      <div
+        id="student-section"
+        className={cn(
+          "bg-white dark:bg-gray-900 rounded-2xl border-2 p-4 transition-colors",
+          triedSubmit && !selectedStudent
+            ? "border-red-400 dark:border-red-500"
+            : "border-gray-100 dark:border-gray-800"
+        )}
+      >
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <GraduationCap className={cn("w-4 h-4", triedSubmit && !selectedStudent ? "text-red-500" : "text-[#318B9B]")} />
+            <h2 className="font-bold text-gray-900 dark:text-white text-sm">
+              {locale === "ar" ? "الطالب *" : "Student *"}
+            </h2>
+          </div>
+          {triedSubmit && !selectedStudent && (
+            <span className="text-xs font-semibold text-red-500">
+              {locale === "ar" ? "مطلوب" : "Required"}
+            </span>
+          )}
         </div>
+        {triedSubmit && !selectedStudent && students && students.length > 0 && (
+          <div className="mb-3 px-3 py-2 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl flex items-center gap-2">
+            <GraduationCap className="w-4 h-4 text-red-500 flex-shrink-0" />
+            <p className="text-xs font-medium text-red-600 dark:text-red-400">
+              {locale === "ar"
+                ? "يجب اختيار طالب واحد على الأقل لإتمام الطلب"
+                : "You must select at least one student to place the order"}
+            </p>
+          </div>
+        )}
         {loadingStudents ? (
           <div className="space-y-2">
             {[...Array(2)].map((_, i) => <div key={i} className="h-14 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse" />)}
@@ -179,7 +207,7 @@ export default function CheckoutPage() {
             {students.map((s) => (
               <button
                 key={s.id}
-                onClick={() => setSelectedStudent(s.id)}
+                onClick={() => { setSelectedStudent(s.id); setTriedSubmit(false); }}
                 className={cn(
                   "w-full text-start p-3 rounded-xl border-2 transition-colors",
                   selectedStudent === s.id
