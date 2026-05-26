@@ -7,7 +7,9 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "schoola.serveftp.com" },
+      { protocol: "http", hostname: "schoola.serveftp.com" },
       { protocol: "http", hostname: "137.184.57.162" },
+      { protocol: "https", hostname: "137.184.57.162" },
       { protocol: "https", hostname: "via.placeholder.com" },
     ],
   },

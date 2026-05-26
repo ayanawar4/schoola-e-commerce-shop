@@ -31,7 +31,10 @@ export function getInitials(name: string): string {
 }
 
 export function fixImageUrl(url: string): string {
-  return url.replace("http://137.184.57.162", "https://schoola.serveftp.com");
+  if (!url) return "https://via.placeholder.com/400x400?text=No+Image";
+  return url
+    .replace("http://137.184.57.162", "https://schoola.serveftp.com")
+    .replace("http://schoola.serveftp.com", "https://schoola.serveftp.com");
 }
 
 export function getProductImage(product: { images?: ({ url: string; is_primary: boolean } | string)[] }): string {
