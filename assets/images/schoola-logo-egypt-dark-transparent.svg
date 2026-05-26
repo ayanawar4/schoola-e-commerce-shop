@@ -1,0 +1,35 @@
+<svg width="680" height="220" viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg">
+  <title>Schoola Logo — Dark Mode</title>
+
+  <circle cx="100" cy="120" r="82" fill="#2E8B9A" opacity="0.08"/>
+  <circle cx="100" cy="120" r="60" fill="#2E8B9A" opacity="0.07"/>
+
+  <polygon points="100,54  158,88 158,156 100,190 42,156 42,88" fill="#3aa0b2"/>
+  <polygon points="100,70  146,96 146,148 100,174 54,148 54,96" fill="#2a7a89"/>
+
+  <polygon points="100,90 118,101 100,112 82,101" fill="white"/>
+  <rect x="72" y="108" width="56" height="7" rx="1.5" fill="white"/>
+  <line x1="118" y1="101" x2="118" y2="128" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+  <circle cx="118" cy="132" r="3.5" fill="#E5B800"/>
+
+  <rect x="80" y="119" width="40" height="28" rx="2" fill="white" opacity="0.12"/>
+  <line x1="100" y1="119" x2="100" y2="147" stroke="white" stroke-width="1"   opacity="0.45"/>
+  <line x1="85"  y1="124" x2="97"  y2="124" stroke="white" stroke-width="0.7" opacity="0.3"/>
+  <line x1="85"  y1="129" x2="97"  y2="129" stroke="white" stroke-width="0.7" opacity="0.3"/>
+  <line x1="85"  y1="134" x2="97"  y2="134" stroke="white" stroke-width="0.7" opacity="0.3"/>
+  <line x1="103" y1="124" x2="115" y2="124" stroke="white" stroke-width="0.7" opacity="0.3"/>
+  <line x1="103" y1="129" x2="115" y2="129" stroke="white" stroke-width="0.7" opacity="0.3"/>
+  <line x1="103" y1="134" x2="115" y2="134" stroke="white" stroke-width="0.7" opacity="0.3"/>
+  <line x1="80"  y1="147" x2="120" y2="147" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+
+  <circle cx="146" cy="150" r="5" fill="#E5B800"/>
+
+  <text font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="74" font-weight="800" letter-spacing="-3" x="190" y="128">
+    <tspan fill="#e8f6f8">School</tspan><tspan fill="#5bc4d4">a</tspan>
+  </text>
+
+  <rect x="190" y="138" width="380" height="1" rx="0.5" fill="#3aa0b2" opacity="0.35"/>
+
+  <text x="190" y="168" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" letter-spacing="4.5" fill="#4a7f88">SCHOOL UNIFORMS &amp; SUPPLIES</text>
+
+</svg>

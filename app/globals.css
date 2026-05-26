@@ -1,0 +1,22 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --primary: #318B9B;
+    --primary-dark: #1a5f6b;
+    --primary-light: #e1f5f8;
+    --accent-schools: #0D9488;
+    --accent-uniforms: #7C3AED;
+    --accent-stores: #EA580C;
+    --accent-supplies: #059669;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { min-height: 100vh; }
+}
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+}
