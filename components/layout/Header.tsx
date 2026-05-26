@@ -17,7 +17,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-100 dark:border-gray-800 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-4 h-14 md:h-20 flex items-center justify-between gap-4">
         {/* Logo */}
         <Link href="/" className="flex items-center flex-shrink-0">
           {darkMode ? (
@@ -26,7 +26,8 @@ export function Header() {
               alt="Schoola"
               width={160}
               height={52}
-              style={{ height: 80, width: "auto" }}
+              className="h-9 md:h-16"
+              style={{ width: "auto" }}
               priority
             />
           ) : (
@@ -35,7 +36,8 @@ export function Header() {
               alt="Schoola"
               width={160}
               height={52}
-              style={{ height: 80, width: "auto" }}
+              className="h-9 md:h-16"
+              style={{ width: "auto" }}
               priority
             />
           )}

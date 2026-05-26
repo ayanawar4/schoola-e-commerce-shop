@@ -14,8 +14,8 @@ interface Message {
 const GEMINI_API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
-const SYSTEM_CONTEXT = `You are Schoola's helpful AI assistant. Schoola is a Saudi Arabian e-commerce platform for school uniforms and supplies. 
-Help customers with: finding uniforms, choosing sizes, understanding payment options (full or partial/installment via Schoola), tracking orders, navigating the website, and general school supply questions.
+const SYSTEM_CONTEXT = `You are Schoola's helpful AI assistant. Schoola is Egypt's #1 e-commerce platform for official school uniforms and supplies.
+Help customers with: finding uniforms for their school, choosing the right sizes, understanding payment via InstaPay, tracking orders, adding students, and navigating the app.
 Be friendly, concise, and helpful. Answer in the same language the user writes in (Arabic or English).`;
 
 const SUGGESTIONS_AR = ["ما هي المدارس المتاحة؟", "كيف أختار المقاس الصحيح؟", "ما هي طرق الدفع؟", "كيف أتتبع طلبي؟"];
@@ -49,6 +49,19 @@ export default function AiChatPage() {
     setLoading(true);
 
     try {
+      if (!GEMINI_API_KEY) {
+        setMessages((prev) => [...prev, {
+          id: Date.now().toString() + "e",
+          role: "assistant",
+          content: locale === "ar"
+            ? "عذراً، المساعد الذكي غير مفعّل حالياً. يرجى التواصل مع الدعم."
+            : "Sorry, the AI assistant is not configured yet. Please contact support.",
+          timestamp: new Date(),
+        }]);
+        setLoading(false);
+        return;
+      }
+
       const history = messages.map((m) => ({
         role: m.role === "user" ? "user" : "model",
         parts: [{ text: m.content }],
