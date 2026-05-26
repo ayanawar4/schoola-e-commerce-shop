@@ -102,87 +102,96 @@ export default function AiChatPage() {
   const suggestions = locale === "ar" ? SUGGESTIONS_AR : SUGGESTIONS_EN;
 
   return (
-    <div className="max-w-2xl mx-auto h-[calc(100vh-8rem)] flex flex-col">
-      {/* Header */}
-      <div className="px-4 pt-4 pb-3 border-b border-gray-100 dark:border-gray-800 flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white" style={{ background: "linear-gradient(135deg, #318B9B, #7C3AED)" }}>
-          <Sparkles className="w-5 h-5" />
-        </div>
-        <div>
-          <h1 className="font-bold text-gray-900 dark:text-white text-sm">{locale === "ar" ? "المساعد الذكي" : "AI Assistant"}</h1>
-          <p className="text-xs text-green-500 flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" />{locale === "ar" ? "متصل" : "Online"}</p>
-        </div>
-      </div>
+    <div className="flex flex-col" style={{ height: "calc(100dvh - 3.5rem - 4rem)" }}>
+      <div className="max-w-2xl w-full mx-auto flex flex-col flex-1 min-h-0">
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
-        {messages.map((msg) => (
-          <div key={msg.id} className={cn("flex gap-2.5", msg.role === "user" ? "flex-row-reverse" : "flex-row")}>
-            <div className={cn("w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5",
-              msg.role === "user" ? "bg-[#318B9B] text-white" : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
-            )}>
-              {msg.role === "user" ? <User className="w-4 h-4" /> : <Sparkles className="w-4 h-4" />}
-            </div>
-            <div className={cn(
-              "max-w-[75%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed",
-              msg.role === "user"
-                ? "bg-[#318B9B] text-white rounded-tr-sm"
-                : "bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 text-gray-800 dark:text-gray-200 rounded-tl-sm"
-            )}>
-              {msg.content}
-            </div>
+        {/* Header */}
+        <div className="px-4 pt-3 pb-3 border-b border-gray-100 dark:border-gray-800 flex items-center gap-3 flex-shrink-0">
+          <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white" style={{ background: "linear-gradient(135deg, #318B9B, #7C3AED)" }}>
+            <Sparkles className="w-4 h-4" />
           </div>
-        ))}
+          <div>
+            <h1 className="font-bold text-gray-900 dark:text-white text-sm">{locale === "ar" ? "المساعد الذكي" : "AI Assistant"}</h1>
+            <p className="text-xs text-green-500 flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" />
+              {locale === "ar" ? "متصل" : "Online"}
+            </p>
+          </div>
+        </div>
 
-        {loading && (
-          <div className="flex gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center flex-shrink-0">
-              <Sparkles className="w-4 h-4 text-gray-400" />
-            </div>
-            <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl rounded-tl-sm px-4 py-3">
-              <div className="flex gap-1">
-                {[0, 1, 2].map((i) => (
-                  <div key={i} className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-600 animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />
-                ))}
+        {/* Messages — scrollable area */}
+        <div className="flex-1 overflow-y-auto px-3 py-3 space-y-3 min-h-0">
+          {messages.map((msg) => (
+            <div key={msg.id} className={cn("flex gap-2", msg.role === "user" ? "flex-row-reverse" : "flex-row")}>
+              <div className={cn(
+                "w-7 h-7 rounded-full flex items-center justify-center shrink-0 mt-0.5",
+                msg.role === "user" ? "bg-[#318B9B] text-white" : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
+              )}>
+                {msg.role === "user" ? <User className="w-3.5 h-3.5" /> : <Sparkles className="w-3.5 h-3.5" />}
+              </div>
+              <div className={cn(
+                "max-w-[80%] px-3 py-2 rounded-2xl text-sm leading-relaxed break-words",
+                msg.role === "user"
+                  ? "bg-[#318B9B] text-white rounded-tr-sm"
+                  : "bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 text-gray-800 dark:text-gray-200 rounded-tl-sm"
+              )}>
+                {msg.content}
               </div>
             </div>
-          </div>
-        )}
+          ))}
 
-        {/* Suggestions (show only at start) */}
-        {messages.length === 1 && (
-          <div className="flex flex-wrap gap-2 justify-center pt-2">
-            {suggestions.map((s) => (
-              <button key={s} onClick={() => sendMessage(s)} className="text-xs px-3 py-2 rounded-xl bg-[#318B9B]/10 text-[#318B9B] hover:bg-[#318B9B]/20 transition-colors font-medium">
-                {s}
-              </button>
-            ))}
-          </div>
-        )}
+          {loading && (
+            <div className="flex gap-2">
+              <div className="w-7 h-7 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center shrink-0">
+                <Sparkles className="w-3.5 h-3.5 text-gray-400" />
+              </div>
+              <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl rounded-tl-sm px-4 py-3">
+                <div className="flex gap-1">
+                  {[0, 1, 2].map((i) => (
+                    <div key={i} className="w-2 h-2 rounded-full bg-gray-300 dark:bg-gray-600 animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
 
-        <div ref={bottomRef} />
-      </div>
+          {/* Suggestions */}
+          {messages.length === 1 && (
+            <div className="flex flex-wrap gap-2 justify-center pt-2">
+              {suggestions.map((s) => (
+                <button key={s} onClick={() => sendMessage(s)}
+                  className="text-xs px-3 py-2 rounded-xl bg-[#318B9B]/10 text-[#318B9B] hover:bg-[#318B9B]/20 transition-colors font-medium">
+                  {s}
+                </button>
+              ))}
+            </div>
+          )}
 
-      {/* Input */}
-      <div className="px-4 pb-4 pt-2 border-t border-gray-100 dark:border-gray-800">
-        <div className="flex gap-2">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage(input)}
-            placeholder={locale === "ar" ? "اكتب رسالتك..." : "Type your message..."}
-            disabled={loading}
-            className="flex-1 px-4 py-3 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder:text-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-[#318B9B]/30 focus:border-[#318B9B] disabled:opacity-60"
-          />
-          <button
-            onClick={() => sendMessage(input)}
-            disabled={!input.trim() || loading}
-            className="w-12 h-12 rounded-2xl bg-[#318B9B] text-white flex items-center justify-center hover:bg-[#1a5f6b] disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-95"
-          >
-            <Send className="w-5 h-5" />
-          </button>
+          <div ref={bottomRef} />
         </div>
+
+        {/* Input — always visible at bottom */}
+        <div className="px-3 pb-3 pt-2 border-t border-gray-100 dark:border-gray-800 flex-shrink-0">
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage(input)}
+              placeholder={locale === "ar" ? "اكتب رسالتك..." : "Type your message..."}
+              disabled={loading}
+              className="flex-1 px-3 py-2.5 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder:text-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-[#318B9B]/30 focus:border-[#318B9B] disabled:opacity-60"
+            />
+            <button
+              onClick={() => sendMessage(input)}
+              disabled={!input.trim() || loading}
+              className="w-10 h-10 rounded-2xl bg-[#318B9B] text-white flex items-center justify-center hover:bg-[#1a5f6b] disabled:opacity-40 disabled:cursor-not-allowed transition-all active:scale-95 shrink-0"
+            >
+              <Send className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
       </div>
     </div>
   );
