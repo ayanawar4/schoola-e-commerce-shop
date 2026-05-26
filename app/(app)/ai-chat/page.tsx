@@ -62,18 +62,20 @@ export default function AiChatPage() {
         return;
       }
 
-      const history = messages.map((m) => ({
-        role: m.role === "user" ? "user" : "model",
-        parts: [{ text: m.content }],
-      }));
+      // Exclude the initial welcome message — Gemini requires contents to start with "user"
+      const history = messages
+        .filter((m) => m.id !== "welcome")
+        .map((m) => ({
+          role: m.role === "user" ? "user" : "model",
+          parts: [{ text: m.content }],
+        }));
 
       const res = await fetch(GEMINI_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          system_instruction: { parts: [{ text: SYSTEM_CONTEXT }] },
           contents: [
-            { role: "user", parts: [{ text: SYSTEM_CONTEXT }] },
-            { role: "model", parts: [{ text: "Understood. I'll act as Schoola's AI assistant." }] },
             ...history,
             { role: "user", parts: [{ text }] },
           ],
@@ -82,6 +84,7 @@ export default function AiChatPage() {
       });
 
       const data = await res.json();
+      if (!res.ok) throw new Error(data?.error?.message ?? "API error");
       const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? (locale === "ar" ? "عذراً، حدث خطأ" : "Sorry, something went wrong.");
       setMessages((prev) => [...prev, { id: Date.now().toString() + "r", role: "assistant", content: reply, timestamp: new Date() }]);
     } catch {

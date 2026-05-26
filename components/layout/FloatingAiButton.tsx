@@ -1,8 +1,12 @@
 "use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Sparkles } from "lucide-react";
 
 export function FloatingAiButton() {
+  const pathname = usePathname();
+  if (pathname === "/ai-chat") return null;
+
   return (
     <Link
       href="/ai-chat"
