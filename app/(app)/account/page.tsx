@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { User, Lock, GraduationCap, Bell, Moon, Globe, LogOut, ChevronDown, ChevronUp, Package, ChevronRight } from "lucide-react";
 import { useAuthStore } from "@/lib/store/auth";
 import { useUiStore } from "@/lib/store/ui";
@@ -30,6 +31,7 @@ function Section({ title, icon: Icon, children }: { title: string; icon: any; ch
 }
 
 export default function AccountPage() {
+  const router = useRouter();
   const { user, isAuthenticated, logout } = useAuthStore();
   const { locale, darkMode, setLocale, toggleDarkMode } = useUiStore();
   const { data: students } = useStudents();
@@ -40,6 +42,7 @@ export default function AccountPage() {
     try { await authApi.logout(); } catch {}
     logout();
     toast(locale === "ar" ? "تم تسجيل الخروج" : "Logged out", "info");
+    router.push("/");
   }
 
   if (!isAuthenticated) {
