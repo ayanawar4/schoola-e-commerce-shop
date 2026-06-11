@@ -26,7 +26,13 @@ export const authApi = {
     apiClient.post<{ message: string }>("/auth/otp/verify", payload).then((r) => r.data),
 
   register: (payload: RegisterPayload) =>
-    apiClient.post<AuthResponse>("/auth/register", payload).then((r) => r.data),
+    apiClient.post<{ message: string }>("/auth/register", payload).then((r) => r.data),
+
+  verifyRegister: (payload: OtpVerifyPayload) =>
+    apiClient.post<AuthResponse>("/auth/register/verify", payload).then((r) => r.data),
+
+  resendRegisterOtp: (payload: OtpRequestPayload) =>
+    apiClient.post<{ message: string }>("/auth/register/resend-otp", payload).then((r) => r.data),
 
   login: (payload: LoginPayload) =>
     apiClient.post<AuthResponse>("/auth/login", payload).then((r) => r.data),

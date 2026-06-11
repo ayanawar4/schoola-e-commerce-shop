@@ -35,6 +35,12 @@ export const useVerifyOtp = () =>
 export const useRegister = () =>
   useMutation({ mutationFn: (p: RegisterPayload) => authApi.register(p) });
 
+export const useVerifyRegister = () =>
+  useMutation({ mutationFn: (p: OtpVerifyPayload) => authApi.verifyRegister(p) });
+
+export const useResendRegisterOtp = () =>
+  useMutation({ mutationFn: (p: OtpRequestPayload) => authApi.resendRegisterOtp(p) });
+
 // ─── Schools ─────────────────────────────────────────────────────────────────
 export const useSchools = (params?: { search?: string; per_page?: number; page?: number }) =>
   useQuery({

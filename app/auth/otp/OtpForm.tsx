@@ -1,7 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useVerifyOtp, useRequestOtp } from "@/lib/hooks/queries";
+import { useVerifyOtp, useRequestOtp, useVerifyRegister, useResendRegisterOtp } from "@/lib/hooks/queries";
 import { useAuthStore } from "@/lib/store/auth";
 import { useUiStore } from "@/lib/store/ui";
 import { getApiError } from "@/lib/api/client";
@@ -12,14 +12,21 @@ export default function OtpForm() {
   const { locale } = useUiStore();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { pendingPhone, pendingCountryCode, clearPendingPhone } = useAuthStore();
+  const { pendingPhone, pendingCountryCode, clearPendingPhone, login } = useAuthStore();
+  const flow = searchParams.get("flow");
+  const isRegisterFlow = flow === "register";
 
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [countdown, setCountdown] = useState(60);
   const [error, setError] = useState("");
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-  const verifyMut = useVerifyOtp();
-  const requestMut = useRequestOtp();
+  const verifyOtpMut = useVerifyOtp();
+  const requestOtpMut = useRequestOtp();
+  const verifyRegisterMut = useVerifyRegister();
+  const resendRegisterMut = useResendRegisterOtp();
+
+  const verifyMut = isRegisterFlow ? verifyRegisterMut : verifyOtpMut;
+  const requestMut = isRegisterFlow ? resendRegisterMut : requestOtpMut;
 
   useEffect(() => {
     if (!pendingPhone) router.push("/auth/login");
@@ -48,9 +55,17 @@ export default function OtpForm() {
     if (!pendingPhone || !pendingCountryCode) return;
     setError("");
     try {
-      await verifyMut.mutateAsync({ phone_country_code: pendingCountryCode, phone: pendingPhone, code });
-      clearPendingPhone();
-      router.push("/auth/complete-profile");
+      if (isRegisterFlow) {
+        const data = await verifyRegisterMut.mutateAsync({ phone_country_code: pendingCountryCode, phone: pendingPhone, code });
+        clearPendingPhone();
+        login(data.token, data.user);
+        toast(locale === "ar" ? "تم إنشاء الحساب بنجاح" : "Account created successfully", "success");
+        router.push("/");
+      } else {
+        await verifyOtpMut.mutateAsync({ phone_country_code: pendingCountryCode, phone: pendingPhone, code });
+        clearPendingPhone();
+        router.push("/auth/complete-profile");
+      }
     } catch (err) {
       setError(getApiError(err));
       setOtp(["", "", "", "", "", ""]);
